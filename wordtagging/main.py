@@ -22,8 +22,13 @@ rn = rhinoMorph.startRhino()
 csv_count = 1
 count = 1
 morphed_data = ''
-stop="때,오늘,삼전,게시물,답글,주식,이,하,되,주,ㅋ,ㅡ,다,오,내일,왜,말,지금,사,알,이제,ㅇ,푸"
-stop_list=stop.split(',')
+stop_words_list = []
+s_file_name = open('불용어사전.txt', 'r', encoding='utf-8')
+for line in s_file_name.readlines():
+    stop_words_list.append(line.rstrip())
+
+s_file_name.close()
+print(stop_words_list)
 
 def write_data(data, filename, encoding='UTF8'):
     with open(filename, 'w', encoding=encoding) as f:
