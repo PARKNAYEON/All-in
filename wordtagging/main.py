@@ -1,15 +1,12 @@
 import csv
 import os
-
-from konlpy.tag import Hannanum
-import rhinoMorph
-import pandas as pd
-from rhinoMorphExtension import calWordsFreq
+import datetime
 from collections import Counter
-import matplotlib.pyplot as plt
+
 import matplotlib
-from wordcloud import WordCloud
-from matplotlib import font_manager, rc
+import pandas as pd
+import rhinoMorph
+from matplotlib import font_manager
 
 font_path = 'C:/Users/parkn/Desktop/맑은고딕/malgun.ttf'
 
@@ -40,11 +37,11 @@ def read_data(filename, encoding='UTF8'):
         data = data[1:]  # txt 파일의 헤더는 제외
     return data
 
-def concating(key_result,value_result):
+def concating(startdate,enddate, key_result,value_result):
     concat_data={'형태소': key_result,
                  '빈도수': value_result}
     tagging_df=pd.DataFrame(concat_data)
-    tagging_df.to_csv('./삼성전자단어빈도수.csv',mode='w',encoding='utf-8-sig',header=True,index=True)
+    tagging_df.to_csv('./삼성전자단어빈도수_상승.csv',mode='w',encoding='utf-8-sig',header=True,index=True)
 
 
 
@@ -56,16 +53,28 @@ def concating(key_result,value_result):
 #         #print("\n", count, ". 형태소 분석 결과:", text_analyzed)
 #         #joined_data_each = ' '.join(text_analyzed)  # 문자열을 하나로 연결
 #         for w in text_analyzed:
-#             if w not in stop_list:  # 내용이 있는 경우만 저장
+#             if w not in stop_words_list:  # 내용이 있는 경우만 저장
 #                 morphed_data += a[2] + "\t" + w + "\n"
 #
 #         count += 1
-
-#print(morphed_data)
-#write_data(morphed_data, 'rating_삼성전자.txt', encoding='UTF8')
+#
+# print(morphed_data)
+# write_data(morphed_data, 'rating_삼성전자.txt', encoding='UTF8')
 data = read_data('rating_삼성전자.txt', encoding='UTF8')
-data_day = [line[0] for line in data]
-data_text = [line[1] for line in data]
+
+# date_day = [line[0] for line in data]
+data_text = []
+# date = datetime.datetime.strptime(date_day[0], "['%Y.%m.%d %H:%M']")
+date_start = datetime.datetime.strptime("['2020.03.05 00:42']", "['%Y.%m.%d %H:%M']")
+date_end = datetime.datetime.strptime("['2020.04.16 23:42']", "['%Y.%m.%d %H:%M']")
+for line in data:
+    date = datetime.datetime.strptime(line[0], "['%Y.%m.%d %H:%M']")
+    if date_start < date and date_end > date:
+        print(date)
+        text = line[1]
+        data_text.append(text)
+        #print(data_text)
+
 mergedText = ' '.join(data_text)
 print(mergedText)
 mergeTextList = mergedText.split(' ')
@@ -74,7 +83,7 @@ wordInfo = Counter(mergeTextList)
 sorted_keys = sorted(wordInfo, key=wordInfo.get, reverse=True)
 sorted_values = sorted(wordInfo.values(), reverse=True)
 
-concating(sorted_keys, sorted_values)
+concating(date_start, date_end, sorted_keys, sorted_values)
 
 #그래프
 # plt.bar(range(50),sorted_values[:50])
