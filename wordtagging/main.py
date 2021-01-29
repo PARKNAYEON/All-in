@@ -45,28 +45,28 @@ def concating(startdate,enddate, key_result,value_result):
 
 
 
-# with open('삼성전자.csv','r',encoding='UTF8') as f:
-#     reader = csv.reader(f)
-#
-#     for a in reader:
-#         text_analyzed = rhinoMorph.onlyMorph_list(rn, a[1], pos=['NNG', 'VCP', 'VCN', 'IC', 'MAG', 'VA', 'VV', 'XR'])
-#         #print("\n", count, ". 형태소 분석 결과:", text_analyzed)
-#         #joined_data_each = ' '.join(text_analyzed)  # 문자열을 하나로 연결
-#         for w in text_analyzed:
-#             if w not in stop_words_list:  # 내용이 있는 경우만 저장
-#                 morphed_data += a[2] + "\t" + w + "\n"
-#
-#         count += 1
-#
-# print(morphed_data)
-# write_data(morphed_data, 'rating_삼성전자.txt', encoding='UTF8')
+with open('삼성전자.csv','r',encoding='UTF8') as f:
+    reader = csv.reader(f)
+
+    for a in reader:
+        text_analyzed = rhinoMorph.onlyMorph_list(rn, a[1], pos=['NNG', 'VCP', 'VCN', 'IC', 'MAG', 'VA', 'VV', 'XR'])
+        #print("\n", count, ". 형태소 분석 결과:", text_analyzed)
+        #joined_data_each = ' '.join(text_analyzed)  # 문자열을 하나로 연결
+        for w in text_analyzed:
+            if w not in stop_words_list:  # 내용이 있는 경우만 저장
+                morphed_data += a[2] + "\t" + w + "\n"
+
+        count += 1
+
+print(morphed_data)
+write_data(morphed_data, 'rating_삼성전자.txt', encoding='UTF8')
 data = read_data('rating_삼성전자.txt', encoding='UTF8')
 
 # date_day = [line[0] for line in data]
 data_text = []
 # date = datetime.datetime.strptime(date_day[0], "['%Y.%m.%d %H:%M']")
-date_start = datetime.datetime.strptime("['2020.03.05 00:42']", "['%Y.%m.%d %H:%M']")
-date_end = datetime.datetime.strptime("['2020.04.16 23:42']", "['%Y.%m.%d %H:%M']")
+date_start = datetime.datetime.strptime("['2020.11.05 00:42']", "['%Y.%m.%d %H:%M']")
+date_end = datetime.datetime.strptime("['2020.12.30 23:42']", "['%Y.%m.%d %H:%M']")
 for line in data:
     date = datetime.datetime.strptime(line[0], "['%Y.%m.%d %H:%M']")
     if date_start < date and date_end > date:
