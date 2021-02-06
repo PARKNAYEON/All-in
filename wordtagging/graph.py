@@ -55,14 +55,11 @@ with open('삼성전자.csv','r',encoding='UTF8') as f:
 
         for w in text_analyzed:
             if w not in stop_words_list:  # 내용이 있는 경우만 저장
-                if w not in positive_words_list:
-                    positive_cnt+=1
-                elif w not in negative_words_list:
-                    negative_cnt+=1
-        if positive_cnt > negative_cnt:
-            cnt_result.append(1)
-        elif positive_cnt < negative_cnt:
-            cnt_result.append(-1)
+                if w in positive_words_list:
+                    positive_cnt += 1
+                elif w in negative_words_list:
+                    negative_cnt -= 1
+        cnt_result.append(positive_cnt + negative_cnt)
         date_result.append(a[2])
         title_result.append(a[1])
         positive_cnt = 0
