@@ -23,18 +23,13 @@ def read_data(filename, encoding='UTF8'):
 
 
 
-
-positive_file = open('긍정_전체형태소_감성사전.txt', 'r', encoding='utf=8')
-negative_file = open('부정_전체형태소_감성사전.txt', 'r', encoding='utf=8')
-
-
 with open('삼성전자단어상승장.csv', 'r', encoding='UTF8') as f:
     reader = csv.reader(f)
     count = 0
     for a in reader:
         positive_lists.append(a[1])
         count+=1
-        if count == 700:
+        if count == 300:
             break
 
 with open('삼성전자단어하락장.csv', 'r', encoding='UTF8') as f:
@@ -43,7 +38,7 @@ with open('삼성전자단어하락장.csv', 'r', encoding='UTF8') as f:
     for a in reader:
         negative_lists.append(a[1])
         count += 1
-        if count == 700:
+        if count == 300:
             break
 
 increase = ''
