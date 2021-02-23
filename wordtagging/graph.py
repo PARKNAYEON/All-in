@@ -70,4 +70,4 @@ concat_data={'date':date_result,
              'title':title_result,
              'pos/neg':cnt_result}
 analyzed_df=pd.DataFrame(concat_data)
-analyzed_df.to_csv('./긍부정추가된 데이터 셋.csv', mode='w',encoding='utf-8-sig',header=True,index=True)
+analyzed_df.to_csv('./sk하이닉스 긍부정추가된 데이터 셋.csv', mode='w',encoding='utf-8-sig',header=True,index=True)
