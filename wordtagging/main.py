@@ -128,6 +128,7 @@ negative_file.close()
 
 positive_cnt = 0
 negative_cnt = 0
+code_result = []
 cnt_result = []
 title_result = []
 date_result = []
@@ -139,7 +140,7 @@ with open('merge_005930.csv','r',encoding='UTF8') as f:
     reader = csv.reader(f)
 
     for a in reader:
-        text_analyzed = rhinoMorph.onlyMorph_list(rn, a[1], pos=['NNG', 'VCP', 'VCN', 'MAG', 'VA', 'VV', 'XR','MM','NV','NF'], eomi=True)
+        text_analyzed = rhinoMorph.onlyMorph_list(rn, a[2], pos=['NNG', 'VCP', 'VCN', 'MAG', 'VA', 'VV', 'XR','MM','NV','NF'], eomi=True)
         #print("\n", count, ". 형태소 분석 결과:", text_analyzed)
         #joined_data_each = ' '.join(text_analyzed)  # 문자열을 하나로 연결
 
@@ -150,16 +151,18 @@ with open('merge_005930.csv','r',encoding='UTF8') as f:
                 elif w in negative_words_list:
                     negative_cnt -= 1
         cnt_result.append(positive_cnt + negative_cnt)
-        date_result.append(a[2])
-        title_result.append(a[1])
-        view_result.append(a[3])
-        like_result.append(a[4])
-        dislike_result.append(a[5])
+        code_result.append(a[1])
+        date_result.append(a[3])
+        title_result.append(a[2])
+        view_result.append(a[4])
+        like_result.append(a[5])
+        dislike_result.append(a[6])
         positive_cnt = 0
         negative_cnt = 0
         count += 1
 
-concat_data={'date':date_result,
+concat_data={'code':code_result,
+            'date':date_result,
              'title':title_result,
              'views':view_result,
              'like':like_result,
