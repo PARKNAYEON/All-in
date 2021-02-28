@@ -13,8 +13,9 @@ os.chdir("/Users/parkn/Desktop/삼성전자2/")
 stock_date = []
 date_data = []
 
+
 def read_stock_data(filename):
-    with open(filename, 'r', encoding='UTF8') as f:
+    with open(filename + '.csv', 'r', encoding='UTF8') as f:
         reader = csv.reader(f)
 
         for a in reader:
@@ -22,60 +23,63 @@ def read_stock_data(filename):
                 continue
 
             date_data.append(a[0])
-            start = int(a[3])
-            end = int(a[4])
+            start = float(a[3])
+            end = float(a[4])
             compare = end - start  # 빼서 비교할 수도 있고
             # 장이 시작될 때의 가격을 기준으로 할 수도 있다
             # print(compare)
             stock_date.append(compare)
             com_data = {'date': date_data,
-                        '떨어진 정도': stock_date,
-                       }
+                        '등락폭': stock_date,
+                        }
             compare_df = pd.DataFrame(com_data)
-            compare_df.to_csv('./2020 주가 변동 폭.csv', mode='w', encoding='utf-8-sig', header=True, index=True)
+            compare_df.to_csv('./2020 ' + filename + '변동 폭.csv', mode='w', encoding='utf-8-sig', header=True,
+                              index=True)
 
-def compare_ratio(stockfilename, posnegfilename):
-    match_rate = 0
-    not_match_rate = 0
-    with open(stockfilename, 'r', encoding='UTF8') as f:
-        reader = csv.reader(f)
-        for a in reader:
-            if a[1] == 'date':
-                continue
-            stock = datetime.date.fromisoformat(a[1])
-            #print(stock)
-            with open(posnegfilename, 'r', encoding='UTF8') as f:
-                reader = csv.reader(f)
-                for b in reader:
-                    if b[2] == 'end date':
-                        continue
-                    st = b[2].replace(" 15:30:00", "")
-                    #print(st)
-                    posneg = datetime.date.fromisoformat(st)
-                    if stock == posneg:
-                        if int(a[2]) <= 0:
-                            if float(b[5]) <= 0:
-                                print(posneg)
-                                print(a[2])
-                                print(b[5])
-                                match_rate = match_rate + 1
-                        if int(a[2]) > 0:
-                            if float(b[5]) > 0:
-                                print(posneg)
-                                print(a[2])
-                                print(b[5])
-                                match_rate = match_rate + 1
-                        if int(a[2]) > 0:
-                            if float(b[5]) < 0:
-                                not_match_rate = not_match_rate + 1
-                        if int(a[2]) < 0:
-                            if float(b[5]) > 0:
-                                not_match_rate = not_match_rate + 1
 
-    print(match_rate)
-    print(not_match_rate)
-    result_rate = match_rate / (match_rate + not_match_rate)
-    print(result_rate)
+# def compare_ratio(stockfilename, posnegfilename):
+#     match_rate = 0
+#     not_match_rate = 0
+#     with open(stockfilename + '.csv', 'r', encoding='UTF8') as f:
+#         reader = csv.reader(f)
+#         for a in reader:
+#             if a[1] == 'date':
+#                 continue
+#             stock = datetime.date.fromisoformat(a[1])
+#             # print(stock)
+#             with open(posnegfilename + 'csv', 'r', encoding='UTF8') as f:
+#                 reader = csv.reader(f)
+#                 for b in reader:
+#                     if b[2] == 'end date':
+#                         continue
+#                     st = b[2].replace(" 15:30:00", "")
+#                     # print(st)
+#                     posneg = datetime.date.fromisoformat(st)
+#                     if stock == posneg:
+#                         if int(a[2]) <= 0:
+#                             if float(b[5]) <= 0:
+#                                 print(posneg)
+#                                 print(a[2])
+#                                 print(b[5])
+#                                 match_rate = match_rate + 1
+#                         if int(a[2]) > 0:
+#                             if float(b[5]) > 0:
+#                                 print(posneg)
+#                                 print(a[2])
+#                                 print(b[5])
+#                                 match_rate = match_rate + 1
+#                         if int(a[2]) > 0:
+#                             if float(b[5]) < 0:
+#                                 not_match_rate = not_match_rate + 1
+#                         if int(a[2]) < 0:
+#                             if float(b[5]) > 0:
+#                                 not_match_rate = not_match_rate + 1
+#
+#     print(match_rate)
+#     print(not_match_rate)
+#     result_rate = match_rate / (match_rate + not_match_rate)
+#     print(result_rate)
+
 
 def posneg_matching(filename):
     year_ = 2020
@@ -88,7 +92,7 @@ def posneg_matching(filename):
     posi_data = []
     nega_data = []
     for i in range(365):
-        start_date = datetime.datetime(year_, month_, day_, 18, 00)
+        start_date = datetime.datetime(year_, month_, day_, 15, 30)
         day_ = day_ + 1
 
         if month_ == 2:
@@ -111,7 +115,7 @@ def posneg_matching(filename):
         negative_emo = 0
         count = 0
 
-        with open(filename, 'r', encoding='UTF8') as f:
+        with open(filename + '.csv', 'r', encoding='UTF8') as f:
             reader = csv.reader(f)
             for a in reader:
                 if a[2] == 'date':
@@ -133,16 +137,17 @@ def posneg_matching(filename):
         end_data.append(end_date)
         posi_data.append(positive_emo)
         nega_data.append(negative_emo)
-        compare_data.append(positive_emo*1.93 - negative_emo)
+        compare_data.append(positive_emo - negative_emo)
 
     print(compare_data)
-    com_data = {'start date':start_data,
-                'end date' : end_data,
-                'posi' : posi_data,
-                'nega' : nega_data,
-                'posneg':compare_data}
+    com_data = {'start date': start_data,
+                'end date': end_data,
+                'posi': posi_data,
+                'nega': nega_data,
+                'posneg': compare_data}
     compare_df = pd.DataFrame(com_data)
-    compare_df.to_csv('./2020 매칭율 긍부정 나누기 (시간오후6시부터).csv',mode='w',encoding='utf-8-sig',header=True,index=True)
+    compare_df.to_csv('./2020 ' + filename + ' 매칭율 긍부정 나누기 (시간오후6시부터).csv', mode='w', encoding='utf-8-sig', header=True,
+                      index=True)
 
     # for s in stock_date:
     #     stock = datetime.datetime.strptime(s[0], '%Y-%m-%d')
@@ -182,7 +187,7 @@ def posneg_matching(filename):
     #
 
 
-#read_stock_data('삼성_주가.csv')
-#print(stock_date)
-#posneg_matching('삼성전자 긍부정추가된 데이터 셋2.csv')
-compare_ratio('2020 주가 변동 폭.csv', '2020 매칭율 긍부정 나누기(장중).csv')
+read_stock_data('035720.KS_주가')
+print(stock_date)
+posneg_matching('035720_직접은어_긍부정포함데이터')
+# compare_ratio('2020 주가 변동 폭.csv', '2020 매칭율 긍부정 나누기(장중).csv')

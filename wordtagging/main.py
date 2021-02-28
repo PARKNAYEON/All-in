@@ -136,7 +136,7 @@ view_result = []
 like_result = []
 dislike_result = []
 
-with open('merge_005930.csv','r',encoding='UTF8') as f:
+with open('merge_035720.csv','r',encoding='UTF8') as f:
     reader = csv.reader(f)
 
     for a in reader:
@@ -169,7 +169,7 @@ concat_data={'code':code_result,
              'dislike':dislike_result,
              'pos/neg':cnt_result}
 analyzed_df=pd.DataFrame(concat_data)
-analyzed_df.to_csv('./삼성전자 긍부정추가된 데이터 셋.csv', mode='w',encoding='utf-8-sig',header=True,index=True)
+analyzed_df.to_csv('./035720_직접은어_긍부정포함데이터.csv', mode='w',encoding='utf-8-sig',header=True,index=True)
 
 # import csv
 # import os
